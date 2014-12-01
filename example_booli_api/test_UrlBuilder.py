@@ -3,7 +3,6 @@
 # http://api.booli.se/sold?&callerId=some_caller_id&time=1416203587&unique=5d0b303g0e3d1125&hash=g77av6re7e81wre12ee7bfd0bf66eeb5e15bda83&offset=0&limit=10&center=59.324564,18.072166&dim=30000.0,30000.0
 '''
 
-
 import unittest
 
 class TestUrlBuilder(unittest.TestCase):
@@ -13,7 +12,7 @@ class TestUrlBuilder(unittest.TestCase):
         self.ub = UrlBuilder()
         self.ub.CallerId('some_caller_id')
         self.ub.PrivateKey('somEPrIVATEkEyw8dDdE0WuEmwI9aQqF9N6dTdse')
-        self.ub.SetAreaSearch(59.324564, 18.072166, 30000.0)
+        self.ub.SetAreaSearch(59.324564, 18.072166, 30000)
         self.ub.Limit(10)
 
     def test_UrlBuilderAttributes(self):
@@ -26,18 +25,22 @@ class TestUrlBuilder(unittest.TestCase):
         self.assertTrue(1401044813 < int(self.ub.TimeStamp()) < 999999999999)
         self.assertEqual(len(self.ub.Unique()), 16)
         self.assertEqual(type(self.ub.Unique()), str)
+        self.assertEqual(self.ub.Center(), (59.324564, 18.072166,))
+        self.assertEqual(self.ub.Dimension(), (30000, 30000))
 
     def test_UrlHashString(self):
         import hashlib
-        stringToHash = ''.join([self.ub.CallerId(),
-                                self.ub.TimeStamp(),
-                                self.ub.PrivateKey(),
-                                self.ub.Unique()])
+        attributes = [self.ub.CallerId(),
+                        self.ub.TimeStamp(),
+                        self.ub.PrivateKey(),
+                        self.ub.Unique()]
+        stringToHash = ''.join(attributes)
         s = hashlib.sha1()
-        hashString = s.update(stringToHash).hexdigest()
-        self.assertEqual(hashString, self.ub.HashString())
-        self.assertEqual(len(self.ub.HashString()), 40)
-        self.assertEqual(type(self.ub.HashString()), str)
+        s.update(stringToHash)
+        hashString = s.hexdigest()
+        self.assertEqual(hashString, self.ub.Hash())
+        self.assertEqual(len(self.ub.Hash()), 40)
+        self.assertEqual(type(self.ub.Hash()), str)
 
     def test_BuildQueryString(self):
         urlString = self.ub.BuildUrl()
