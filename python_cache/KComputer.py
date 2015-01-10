@@ -15,10 +15,10 @@ class Computer(object):
         key = (base, exponent)
 
         # Retrieve value from cache (if any)
-        cachedValue = self.cache.GetValue(key)
-        if cachedValue != None:
-            print 'Key %s found in cache (value = %.0f).' % (str(key), cachedValue)
-            return cachedValue
+        if self.cache.HasKey(key):
+            value = self.cache.GetValue(key)
+            print 'Key %s found in cache (value = %.0f).' % (str(key), value)
+            return value
 
         # Compute value and put in cache
         value = base**exponent

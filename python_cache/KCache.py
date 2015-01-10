@@ -10,5 +10,8 @@ class Cache(object):
     def GetValue(self, key):
         return self.cache.get(key)
 
+    def HasKey(self, key):
+        return self.cache.get(key) != None
+
     def ClearCache(self):
         self.cache = dict()
