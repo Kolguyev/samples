@@ -14,3 +14,6 @@ print '--- Clear cache ---'
 computer.ClearCache()
 value = computer.Compute(5, 2)
 print '4) 5^2 =', value
+
+value = computer.Compute(5, 2)
+print '5) 5^2 =', value
