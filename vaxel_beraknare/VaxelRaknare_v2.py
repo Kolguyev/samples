@@ -8,7 +8,7 @@ class ValorRaknare(object):
         self.valor = valor
 
     def AntalOchAterstaende(self, belopp):
-        ''' Raknar antalet av en valor samt '''
+        ''' Raknar antalet av en valor '''
         aterstaende = belopp%self.valor
         antal = belopp/self.valor
         return antal, aterstaende
